@@ -1,7 +1,5 @@
-package br.com.academiadev.domain;
+package br.com.academiadev.domain.entities;
 
-import br.com.academiadev.domain.entities.Course;
-import br.com.academiadev.domain.entities.Student;
 import br.com.academiadev.domain.enums.DifficultyLevel;
 import br.com.academiadev.domain.enums.SubscriptionPlan;
 import br.com.academiadev.domain.exceptions.DomainException;
