@@ -82,6 +82,4 @@ public class Course {
     public CourseStatus getStatus() { 
         return status; 
     }
-
-
 }
