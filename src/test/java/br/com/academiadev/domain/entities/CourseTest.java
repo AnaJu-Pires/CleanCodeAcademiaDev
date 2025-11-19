@@ -1,6 +1,5 @@
-package br.com.academiadev.domain;
+package br.com.academiadev.domain.entities;
 
-import br.com.academiadev.domain.entities.Course;
 import br.com.academiadev.domain.enums.CourseStatus;
 import br.com.academiadev.domain.enums.DifficultyLevel;
 import br.com.academiadev.domain.exceptions.DomainException;
@@ -21,6 +20,7 @@ class CourseTest {
         );
 
         assertEquals("Java Clean Arch", course.getTitle());
+        assertEquals("Aprenda arquitetura limpa", course.getDescription());
         assertEquals("Uncle Bob", course.getInstructorName());
         assertEquals(20, course.getDurationHours());
         assertEquals(DifficultyLevel.ADVANCED, course.getDifficultyLevel());
@@ -30,8 +30,17 @@ class CourseTest {
 
     @Test
     void shouldThrowExceptionWhenCreatingInvalidCourse() {
+
         assertThrows(DomainException.class, () -> {
-            new Course("", "Desc", "Instrutor", 10, DifficultyLevel.BEGINNER);
+            new Course(null, "Desc", "Inst", 10, DifficultyLevel.BEGINNER);
+        });
+
+        assertThrows(DomainException.class, () -> {
+            new Course("", "Desc", "Inst", 10, DifficultyLevel.BEGINNER);
+        });
+
+        assertThrows(DomainException.class, () -> {
+            new Course("   ", "Desc", "Inst", 10, DifficultyLevel.BEGINNER);
         });
 
         assertThrows(DomainException.class, () -> {
@@ -44,6 +53,18 @@ class CourseTest {
 
         assertThrows(DomainException.class, () -> {
             new Course("Java", "Desc", "Instrutor", 10, null);
+        });
+
+        assertThrows(DomainException.class, () -> {
+            new Course("Java", null, null, 10, DifficultyLevel.BEGINNER);
+        });
+
+        assertThrows(DomainException.class, () -> {
+            new Course("Java", "Desc", "", 10, DifficultyLevel.BEGINNER);
+        });
+
+        assertThrows(DomainException.class, () -> {
+            new Course("Java", "Desc", "   ", 10, DifficultyLevel.BEGINNER);
         });
     }
 
