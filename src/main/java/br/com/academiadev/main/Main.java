@@ -12,8 +12,10 @@ public class Main {
 
 
         var createCourseUseCase = new CreateCourseUseCase(courseRepo);
+        var listCoursesUseCase = new ListCoursesUseCase(courseRepo);
+        var searchCourseUseCase = new SearchCourseUseCase(courseRepo);
 
-        var courseMenu = new CourseMenu(createCourseUseCase);
+        var courseMenu = new CourseMenu(createCourseUseCase, listCoursesUseCase, searchCourseUseCase);
         var mainMenu = new MainMenu(courseMenu);
 
         mainMenu.show();
