@@ -15,7 +15,7 @@ public class RegisterStudentUseCase {
 
     public Student execute(String name, String email, SubscriptionPlan plan) {
         if (repository.findByEmail(email).isPresent()) {
-            throw new BusinessException("Já existe um aluno cadastrado com o e-mail: " + email);
+            throw new BusinessException("There is already a student registered with the email " + email);
         }
 
         Student newStudent = new Student(name, email, plan);

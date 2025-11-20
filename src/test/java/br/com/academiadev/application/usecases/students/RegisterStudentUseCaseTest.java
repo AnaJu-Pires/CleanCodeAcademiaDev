@@ -9,9 +9,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
 import java.util.Optional;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -49,9 +47,7 @@ class RegisterStudentUseCaseTest {
         BusinessException exception = assertThrows(BusinessException.class, () -> {
             useCase.execute("Ana", "ana@email.com", SubscriptionPlan.PREMIUM);
         });
-
-        assertEquals("Já existe um aluno cadastrado com o e-mail: ana@email.com", exception.getMessage());
-        
+        assertEquals("There is already a student registered with the email ana@email.com", exception.getMessage());
         verify(repository, never()).save(any(Student.class));
     }
 }

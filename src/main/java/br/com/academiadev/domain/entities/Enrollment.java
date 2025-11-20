@@ -12,7 +12,7 @@ public class Enrollment {
 
     public Enrollment(Student student, Course course) {
         if (student == null || course == null) {
-            throw new BusinessException("Aluno e Curso são obrigatórios para a matrícula.");
+            throw new BusinessException("The student and course cannot be null.");
         }
         
         this.student = student;
@@ -23,7 +23,7 @@ public class Enrollment {
 
     public void addWatchedHours(int hoursToAdd) {
         if (hoursToAdd < 0) {
-            throw new EnrollmentException("As horas assistidas não podem ser negativas.");
+            throw new EnrollmentException("Watched hours cannot be negative.");
         }
 
         int courseDuration = course.getDurationHours();
@@ -31,7 +31,7 @@ public class Enrollment {
 
         if (newTotal > courseDuration) {
             throw new EnrollmentException(
-                "A carga horária total (" + newTotal + "h) excede a duração do curso (" + courseDuration + "h)."
+                "Total watched hours (" + newTotal + "h) exceed course duration (" + courseDuration + "h)."
             );
         }
         

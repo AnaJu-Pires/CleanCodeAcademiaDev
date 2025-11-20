@@ -14,7 +14,7 @@ public class Student extends User {
 
     public Student(String name, String email, SubscriptionPlan subscriptionPlan) {
         super(name, email);
-        if (subscriptionPlan == null) throw new BusinessException("Plano é obrigatório");
+        if (subscriptionPlan == null) throw new BusinessException("The subscription plan cannot be null.");
         this.subscriptionPlan = subscriptionPlan;
     }
 
@@ -25,16 +25,16 @@ public class Student extends User {
 
     public void enroll(Course course) {
         if (!course.isActive()) {
-            throw new EnrollmentException("Não é possível se matricular em curso inativo.");
+            throw new EnrollmentException("It is not possible to enroll in an inactive course.");
         }
         boolean alreadyEnrolled = enrollments.stream()
-                .anyMatch(e -> e.getCourse().getTitle().equals(course.getTitle())); // Compara por título ou objeto
+                .anyMatch(e -> e.getCourse().getTitle().equals(course.getTitle()));
 
         if (alreadyEnrolled) {
-            throw new EnrollmentException("Aluno já matriculado neste curso.");
+            throw new EnrollmentException("Student is already enrolled in this course.");
         }
         if (enrollments.size() >= subscriptionPlan.getMaxActiveCourses()) {
-            throw new EnrollmentException("Limite de matrículas atingido para o plano " + subscriptionPlan);
+            throw new EnrollmentException("Enrollment limit reached for plan " + subscriptionPlan);
         }
         Enrollment newEnrollment = new Enrollment(this, course);
         this.enrollments.add(newEnrollment);
@@ -42,15 +42,19 @@ public class Student extends User {
 
     public void changeSubscriptionPlan(SubscriptionPlan newPlan) {
         if (newPlan == null) {
-            throw new BusinessException("O novo plano não pode ser nulo.");
+            throw new BusinessException("The new plan cannot be null.");
         }
         
+        if (this.subscriptionPlan == newPlan) {
+            throw new BusinessException("The student already has the plan " + newPlan);
+        }
+
         int newLimit = newPlan.getMaxActiveCourses();
         int currentEnrollments = this.enrollments.size();
 
         if (currentEnrollments > newLimit) {
             throw new BusinessException(
-                String.format("Não é possível mudar para o plano %s. O aluno possui %d matrículas, mas o plano permite apenas %d.",
+                String.format("It is not possible to change to the plan %s. The student has %d enrollments, but the plan allows only %d.",
                 newPlan, currentEnrollments, newLimit)
             );
         }

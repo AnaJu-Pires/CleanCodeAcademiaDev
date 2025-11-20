@@ -86,12 +86,18 @@ class StudentTest {
     }
 
     @Test
+    void shouldThrowExceptionWhenChangingToSamePlan() {
+        Student student = new Student("Ana", "ana@email.com", SubscriptionPlan.BASIC);
+        assertThrows(BusinessException.class, () -> student.changeSubscriptionPlan(SubscriptionPlan.BASIC));
+    }
+
+    @Test
     void shouldAllowDowngradeWhenEnrollmentsAreWithinLimit() {
         Student student = new Student("Ana", "ana@email.com", SubscriptionPlan.PREMIUM);
         student.enroll(new Course("C1", "Desc", "Prof", 10, DifficultyLevel.BEGINNER));
         student.enroll(new Course("C2", "Desc", "Prof", 10, DifficultyLevel.BEGINNER));
         student.enroll(new Course("C3", "Desc", "Prof", 10, DifficultyLevel.BEGINNER));
-        
+
         assertDoesNotThrow(() -> student.changeSubscriptionPlan(SubscriptionPlan.BASIC));
         assertEquals(SubscriptionPlan.BASIC, student.getSubscriptionPlan());
     }

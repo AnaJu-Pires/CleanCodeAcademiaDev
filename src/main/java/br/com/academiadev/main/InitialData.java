@@ -1,5 +1,6 @@
 package br.com.academiadev.main;
 
+import br.com.academiadev.application.usecases.admins.RegisterAdminUseCase;
 import br.com.academiadev.application.usecases.courses.CreateCourseUseCase;
 import br.com.academiadev.application.usecases.courses.InactivateCourseUseCase;
 import br.com.academiadev.application.usecases.students.RegisterStudentUseCase;
@@ -16,14 +17,16 @@ public class InitialData {
     private final CreateCourseUseCase createCourseUseCase;
     private final RegisterStudentUseCase registerStudentUseCase;
     private final InactivateCourseUseCase inactivateCourseUseCase;
+    private final RegisterAdminUseCase registerAdminUseCase;
     private final Faker faker;
     private final Random random;
 
-    public InitialData(CreateCourseUseCase createCourseUseCase, InactivateCourseUseCase inactivateCourseUseCase, RegisterStudentUseCase registerStudentUseCase) {
+    public InitialData(CreateCourseUseCase createCourseUseCase, InactivateCourseUseCase inactivateCourseUseCase, RegisterStudentUseCase registerStudentUseCase, RegisterAdminUseCase registerAdminUseCase) {
         this.createCourseUseCase = createCourseUseCase;
         this.inactivateCourseUseCase = inactivateCourseUseCase;
         this.registerStudentUseCase = registerStudentUseCase;
-        this.faker = new Faker(new Locale("en-US"));
+        this.registerAdminUseCase = registerAdminUseCase;
+        this.faker = new Faker(new Locale("pt-BR"));
         this.random = new Random();
     }
 
@@ -59,6 +62,16 @@ public class InitialData {
 
                 try {
                     registerStudentUseCase.execute(name, email, plan);
+                } catch (Exception ignored) {
+                }
+            }
+
+            for (int i = 0; i < 5; i++) {
+                String name = faker.name().fullName();
+                String email = name.toLowerCase().replace(" ", ".") + "@example.com";
+
+                try {
+                    registerAdminUseCase.execute(name, email);
                 } catch (Exception ignored) {
                 }
             }

@@ -68,11 +68,13 @@ public class ChangeStudentPlanUseCaseTest {
     }
 
     @Test
-    void shouldNotSaveWhenPlanIsSame() {
+    void shouldThrowExceptionIfPlanIsSame() {
         Student s1 = new Student("Ana", "ana@test.com", SubscriptionPlan.BASIC);
         when(repository.findByEmail("ana@test.com")).thenReturn(Optional.of(s1));
 
-        useCase.execute("ana@test.com", SubscriptionPlan.BASIC);
+        assertThrows(BusinessException.class, () -> {
+            useCase.execute("ana@test.com", SubscriptionPlan.BASIC);
+        });
 
         verify(repository, never()).save(any());
     }

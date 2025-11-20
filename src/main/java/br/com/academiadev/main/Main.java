@@ -2,6 +2,7 @@ package br.com.academiadev.main;
 
 import br.com.academiadev.infrastructure.persistence.*;
 import br.com.academiadev.infrastructure.ui.*;
+import br.com.academiadev.application.usecases.admins.*;
 import br.com.academiadev.application.usecases.courses.*;
 import br.com.academiadev.application.usecases.students.*;
 
@@ -10,6 +11,7 @@ public class Main {
         
         var courseRepo = new CourseRepositoryInMemory();
         var studentRepo = new StudentRepositoryInMemory();
+        var adminRepo = new AdminRepositoryInMemory();
 
 
         var createCourseUseCase = new CreateCourseUseCase(courseRepo);
@@ -21,9 +23,14 @@ public class Main {
 
         var registerStudentUseCase = new RegisterStudentUseCase(studentRepo);
         var listStudentsUseCase = new ListStudentsUseCase(studentRepo);
+        var changeStudentPlanUseCase = new ChangeStudentPlanUseCase(studentRepo);
+        var searchStudentUseCase = new SearchStudentUseCase(studentRepo);
+
+        var registerAdminUseCase = new RegisterAdminUseCase(adminRepo);
+        var listAdminsUseCase = new ListAdminsUseCase(adminRepo);
 
 
-        var initialData = new InitialData(createCourseUseCase, inactivateCourseUseCase, registerStudentUseCase);
+        var initialData = new InitialData(createCourseUseCase, inactivateCourseUseCase, registerStudentUseCase, registerAdminUseCase);
         initialData.populate();
 
 
@@ -39,7 +46,12 @@ public class Main {
             activateCourseUseCase
         );
 
-        var userManagementMenu = new UserManagementMenu(listStudentsUseCase);
+        var userManagementMenu = new UserManagementMenu(
+            listStudentsUseCase, 
+            changeStudentPlanUseCase, 
+            searchStudentUseCase, 
+            registerAdminUseCase,
+            listAdminsUseCase);
 
         var reportsMenu = new ReportsMenu();
 

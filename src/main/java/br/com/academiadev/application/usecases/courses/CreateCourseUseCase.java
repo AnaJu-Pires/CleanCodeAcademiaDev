@@ -16,7 +16,7 @@ public class CreateCourseUseCase {
     public Course execute(String title, String description, String instructor, int hours, DifficultyLevel level) {
         
         if (repository.findByTitle(title).isPresent()) {
-            throw new BusinessException("Já existe um curso com o título '" + title + "'.");
+            throw new BusinessException("There is already a course with the title '" + title + "'.");
         }
 
         Course newCourse = new Course(title, description, instructor, hours, level);

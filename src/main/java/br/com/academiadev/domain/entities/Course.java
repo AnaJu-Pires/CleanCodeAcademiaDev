@@ -42,25 +42,25 @@ public class Course {
 
     private void validateTitle(String title) {
         if (title == null || title.trim().isEmpty()) {
-            throw new BusinessException("O título do curso não pode ser vazio.");
+            throw new BusinessException("The course title cannot be empty.");
         }
     }
 
     private void validateInstructorName(String instructorName) {
         if (instructorName == null || instructorName.trim().isEmpty()) {
-            throw new BusinessException("O nome do instrutor não pode ser vazio.");
+            throw new BusinessException("The instructor's name cannot be empty.");
         }
     }
 
     private void validateDuration(int duration) {
         if (duration <= 0) {
-            throw new BusinessException("A carga horária deve ser maior que zero.");
+            throw new BusinessException("The duration must be greater than zero.");
         }
     }
 
     private void validateDifficulty(DifficultyLevel level) {
         if (level == null) {
-            throw new BusinessException("O nível de dificuldade é obrigatório.");
+            throw new BusinessException("The difficulty level is required.");
         }
     }
 
