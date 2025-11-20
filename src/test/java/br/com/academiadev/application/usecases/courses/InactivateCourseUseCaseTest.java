@@ -6,17 +6,17 @@ import br.com.academiadev.domain.enums.DifficultyLevel;
 import br.com.academiadev.domain.exceptions.DomainException;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith; // Importante
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension; // Importante
+import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoExtension.class) // <--- FALTAVA ISSO PARA O MOCKITO FUNCIONAR
+@ExtendWith(MockitoExtension.class)
 public class InactivateCourseUseCaseTest {
 
     @Mock
