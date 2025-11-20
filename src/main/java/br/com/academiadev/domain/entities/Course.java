@@ -82,4 +82,17 @@ public class Course {
     public CourseStatus getStatus() { 
         return status; 
     }
+
+    public void updateDescription(String newDescription) {
+        this.description = newDescription;
+    }
+    public void updateInstructorName(String newInstructorName) {
+        this.instructorName = newInstructorName;
+    }
+    public void updateDurationHours(Integer newDurationHours) {
+        this.durationHours = newDurationHours;
+    }
+    public void updateDifficultyLevel(DifficultyLevel newDifficultyLevel) {
+        this.difficultyLevel = newDifficultyLevel;
+    }
 }
