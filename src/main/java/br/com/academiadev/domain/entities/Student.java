@@ -40,6 +40,24 @@ public class Student extends User {
         this.enrollments.add(newEnrollment);
     }
 
+    public void changeSubscriptionPlan(SubscriptionPlan newPlan) {
+        if (newPlan == null) {
+            throw new BusinessException("O novo plano não pode ser nulo.");
+        }
+        
+        int newLimit = newPlan.getMaxActiveCourses();
+        int currentEnrollments = this.enrollments.size();
+
+        if (currentEnrollments > newLimit) {
+            throw new BusinessException(
+                String.format("Não é possível mudar para o plano %s. O aluno possui %d matrículas, mas o plano permite apenas %d.",
+                newPlan, currentEnrollments, newLimit)
+            );
+        }
+
+        this.subscriptionPlan = newPlan;
+    }
+
     public SubscriptionPlan getSubscriptionPlan() {
         return subscriptionPlan;
     }

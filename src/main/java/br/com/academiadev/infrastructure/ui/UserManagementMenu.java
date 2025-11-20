@@ -46,6 +46,10 @@ public class UserManagementMenu {
     private void listStudents() {
         ConsoleUtils.printHeader("List of Students");
         System.out.println("Total Students: " + listStudentsUseCase.execute().size() + "\n");
+        if (listStudentsUseCase.execute().isEmpty()) {
+            System.out.println("No students found.");
+            return;
+        }
         listStudentsUseCase.execute().forEach(student -> {
             System.out.println("Name: " + student.getName());
             System.out.println("Email: " + student.getEmail());
