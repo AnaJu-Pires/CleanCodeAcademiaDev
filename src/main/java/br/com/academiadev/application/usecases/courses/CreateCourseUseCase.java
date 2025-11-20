@@ -3,7 +3,7 @@ package br.com.academiadev.application.usecases.courses;
 import br.com.academiadev.application.repositories.CourseRepository;
 import br.com.academiadev.domain.entities.Course;
 import br.com.academiadev.domain.enums.DifficultyLevel;
-import br.com.academiadev.domain.exceptions.DomainException;
+import br.com.academiadev.domain.exceptions.BusinessException;
 
 public class CreateCourseUseCase {
 
@@ -16,7 +16,7 @@ public class CreateCourseUseCase {
     public Course execute(String title, String description, String instructor, int hours, DifficultyLevel level) {
         
         if (repository.findByTitle(title).isPresent()) {
-            throw new DomainException("Já existe um curso com o título '" + title + "'.");
+            throw new BusinessException("Já existe um curso com o título '" + title + "'.");
         }
 
         Course newCourse = new Course(title, description, instructor, hours, level);

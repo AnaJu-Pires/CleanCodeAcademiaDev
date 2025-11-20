@@ -41,11 +41,14 @@ public class Main {
 
         var userManagementMenu = new UserManagementMenu(listStudentsUseCase);
 
+        var reportsMenu = new ReportsMenu();
+
         var registerMenu = new RegisterMenu(registerStudentUseCase);
 
-        var adminMenu = new AdminMenu(courseMenu, userManagementMenu);
+        var adminMenu = new AdminMenu(courseMenu, userManagementMenu, reportsMenu);
 
         var mainMenu = new MainMenu(adminMenu, registerMenu);
+
 
 
         mainMenu.show();

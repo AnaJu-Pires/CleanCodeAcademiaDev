@@ -3,7 +3,7 @@ package br.com.academiadev.application.usecases.courses;
 import br.com.academiadev.application.repositories.CourseRepository;
 import br.com.academiadev.domain.entities.Course;
 import br.com.academiadev.domain.enums.DifficultyLevel;
-import br.com.academiadev.domain.exceptions.DomainException;
+import br.com.academiadev.domain.exceptions.BusinessException;
 
 public class UpdateCourseUseCase {
 
@@ -16,7 +16,7 @@ public class UpdateCourseUseCase {
     public Course execute(String title, String newDescription, String newInstructor, Integer newHours, DifficultyLevel newDifficultyLevel) {
 
         Course course = repository.findByTitle(title)
-                .orElseThrow(() -> new DomainException("No course found with the title: " + title));
+                .orElseThrow(() -> new BusinessException("No course found with the title: " + title));
 
         if (newDescription != null && !newDescription.isBlank()) {
             course.updateDescription(newDescription);

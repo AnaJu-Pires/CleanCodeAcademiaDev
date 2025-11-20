@@ -1,6 +1,6 @@
 package br.com.academiadev.domain.entities;
 
-import br.com.academiadev.domain.exceptions.DomainException;
+import br.com.academiadev.domain.exceptions.BusinessException;
 
 public abstract class User {
     protected String name;
@@ -15,17 +15,17 @@ public abstract class User {
 
     private void validateName(String name) {
         if (name == null || name.trim().isEmpty()) {
-            throw new DomainException("O nome do usuário é obrigatório.");
+            throw new BusinessException("O nome do usuário é obrigatório.");
         }
     }
 
     private void validateEmail(String email) {
         if (email == null || email.trim().isEmpty()) {
-            throw new DomainException("O email do usuário é obrigatório.");
+            throw new BusinessException("O email do usuário é obrigatório.");
         }
         String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
         if (!email.matches(emailRegex)) {
-            throw new DomainException("O email do usuário é inválido.");
+            throw new BusinessException("O email do usuário é inválido.");
         }
     }
 

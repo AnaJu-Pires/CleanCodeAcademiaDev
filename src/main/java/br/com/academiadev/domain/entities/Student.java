@@ -1,7 +1,7 @@
 package br.com.academiadev.domain.entities;
 
 import br.com.academiadev.domain.enums.SubscriptionPlan;
-import br.com.academiadev.domain.exceptions.DomainException;
+import br.com.academiadev.domain.exceptions.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,7 +14,7 @@ public class Student extends User {
 
     public Student(String name, String email, SubscriptionPlan subscriptionPlan) {
         super(name, email);
-        if (subscriptionPlan == null) throw new DomainException("Plano é obrigatório");
+        if (subscriptionPlan == null) throw new BusinessException("Plano é obrigatório");
         this.subscriptionPlan = subscriptionPlan;
     }
 
@@ -25,16 +25,16 @@ public class Student extends User {
 
     public void enroll(Course course) {
         if (!course.isActive()) {
-            throw new DomainException("Não é possível se matricular em curso inativo.");
+            throw new EnrollmentException("Não é possível se matricular em curso inativo.");
         }
         boolean alreadyEnrolled = enrollments.stream()
                 .anyMatch(e -> e.getCourse().getTitle().equals(course.getTitle())); // Compara por título ou objeto
 
         if (alreadyEnrolled) {
-            throw new DomainException("Aluno já matriculado neste curso.");
+            throw new EnrollmentException("Aluno já matriculado neste curso.");
         }
         if (enrollments.size() >= subscriptionPlan.getMaxActiveCourses()) {
-            throw new DomainException("Limite de matrículas atingido para o plano " + subscriptionPlan);
+            throw new EnrollmentException("Limite de matrículas atingido para o plano " + subscriptionPlan);
         }
         Enrollment newEnrollment = new Enrollment(this, course);
         this.enrollments.add(newEnrollment);

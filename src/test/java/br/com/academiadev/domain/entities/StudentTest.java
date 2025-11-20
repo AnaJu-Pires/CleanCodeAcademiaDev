@@ -2,7 +2,8 @@ package br.com.academiadev.domain.entities;
 
 import br.com.academiadev.domain.enums.DifficultyLevel;
 import br.com.academiadev.domain.enums.SubscriptionPlan;
-import br.com.academiadev.domain.exceptions.DomainException;
+import br.com.academiadev.domain.exceptions.BusinessException;
+import br.com.academiadev.domain.exceptions.EnrollmentException;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -17,7 +18,6 @@ class StudentTest {
         assertEquals(SubscriptionPlan.BASIC, student.getSubscriptionPlan());
     }
 
-  
     @Test
     void shouldThrowExceptionWhenEnrollingMoreThanAllowed() {
         Student student = new Student("Ana", "ana@email.com", SubscriptionPlan.BASIC);
@@ -33,25 +33,23 @@ class StudentTest {
 
         assertEquals(3, student.getEnrollments().size());
 
-        assertThrows(DomainException.class, () -> student.enroll(c4));
+        assertThrows(EnrollmentException.class, () -> student.enroll(c4));
     }
-
 
     @Test
     void shouldThrowExceptionWhenUserInvalid() {
-        assertThrows(DomainException.class, () -> new Student(null, "email@teste.com", SubscriptionPlan.BASIC));
-        assertThrows(DomainException.class, () -> new Student("", "email@teste.com", SubscriptionPlan.BASIC));
+        assertThrows(BusinessException.class, () -> new Student(null, "email@teste.com", SubscriptionPlan.BASIC));
+        assertThrows(BusinessException.class, () -> new Student("", "email@teste.com", SubscriptionPlan.BASIC));
 
-        assertThrows(DomainException.class, () -> new Student("Ana", null, SubscriptionPlan.BASIC));
-        assertThrows(DomainException.class, () -> new Student("Ana", "", SubscriptionPlan.BASIC));
+        assertThrows(BusinessException.class, () -> new Student("Ana", null, SubscriptionPlan.BASIC));
+        assertThrows(BusinessException.class, () -> new Student("Ana", "", SubscriptionPlan.BASIC));
         
-        assertThrows(DomainException.class, () -> new Student("Ana", "email-invalido-sem-arroba", SubscriptionPlan.BASIC));
+        assertThrows(BusinessException.class, () -> new Student("Ana", "email-invalido-sem-arroba", SubscriptionPlan.BASIC));
     }
-
 
     @Test
     void shouldThrowExceptionWhenPlanIsNull() {
-        assertThrows(DomainException.class, () -> new Student("Ana", "ana@teste.com", null));
+        assertThrows(BusinessException.class, () -> new Student("Ana", "ana@teste.com", null));
     }
 
     @Test
@@ -67,17 +65,17 @@ class StudentTest {
         
         course.inactivate();
 
-        assertThrows(DomainException.class, () -> student.enroll(course));
+        assertThrows(EnrollmentException.class, () -> student.enroll(course));
     }
 
     @Test
     void shouldThrowExceptionWhenAlreadyEnrolled() {
-        Student student = new Student("Ana", "ana@email.com", SubscriptionPlan.PREMIUM); // Premium para não dar erro de limite
+        Student student = new Student("Ana", "ana@email.com", SubscriptionPlan.PREMIUM); 
         Course course = new Course("Java", "Desc", "Prof", 10, DifficultyLevel.BEGINNER);
 
         student.enroll(course);
 
-        assertThrows(DomainException.class, () -> student.enroll(course));
+        assertThrows(EnrollmentException.class, () -> student.enroll(course));
         assertTrue(student.isEnrolledIn(course));
     }
 }

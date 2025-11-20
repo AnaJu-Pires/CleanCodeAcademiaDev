@@ -3,7 +3,7 @@ package br.com.academiadev.application.usecases.courses;
 import br.com.academiadev.application.repositories.CourseRepository;
 import br.com.academiadev.domain.entities.Course;
 import br.com.academiadev.domain.enums.DifficultyLevel;
-import br.com.academiadev.domain.exceptions.DomainException;
+import br.com.academiadev.domain.exceptions.BusinessException;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -52,7 +52,7 @@ public class ActivateCourseUseCaseTest {
     @Test
     void shouldThrowExceptionWhenCourseNotFound() {
         when(courseRepository.findByTitle("Inexistente")).thenReturn(Optional.empty());
-        assertThrows(DomainException.class, () -> {
+        assertThrows(BusinessException.class, () -> {
             useCase.execute("Inexistente");
         });
     }

@@ -4,7 +4,7 @@ import java.util.Scanner;
 import br.com.academiadev.application.usecases.students.RegisterStudentUseCase;
 import br.com.academiadev.domain.entities.Student;
 import br.com.academiadev.domain.enums.SubscriptionPlan;
-import br.com.academiadev.domain.exceptions.DomainException;
+import br.com.academiadev.domain.exceptions.BusinessException;
 
 public class RegisterMenu {
 
@@ -50,7 +50,7 @@ public class RegisterMenu {
         try {
             Student registeredStudent = this.registerStudentUseCase.execute(name, email, plan);
             System.out.println("\nSuccess! The student '" + registeredStudent.getName() + "' has been registered.");
-        } catch (DomainException e) {
+        } catch (BusinessException e) {
             System.out.println("\nBusiness Error: " + e.getMessage());
         } catch (Exception e) {
             System.out.println("\nAn unexpected error occurred: " + e.getMessage());

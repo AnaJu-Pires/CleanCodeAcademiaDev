@@ -19,7 +19,7 @@ public class MainMenu {
             System.out.println("\nWelcome to AcademiaDev");
             System.out.println("1. Admin Access");
             System.out.println("2. Student Access");
-            System.out.println("3. Register (New Student)");
+            System.out.println("3. Register");
             System.out.println("0. Exit");
             System.out.print("Option: ");
 

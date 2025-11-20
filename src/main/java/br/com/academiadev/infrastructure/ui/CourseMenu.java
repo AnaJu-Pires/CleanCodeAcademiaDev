@@ -3,7 +3,7 @@ package br.com.academiadev.infrastructure.ui;
 import br.com.academiadev.application.usecases.courses.*;
 import br.com.academiadev.domain.entities.Course;
 import br.com.academiadev.domain.enums.DifficultyLevel;
-import br.com.academiadev.domain.exceptions.DomainException;
+import br.com.academiadev.domain.exceptions.BusinessException;
 
 import java.util.Optional;
 import java.util.Scanner;
@@ -107,7 +107,7 @@ public class CourseMenu {
 
             System.out.println("\nSuccess! The course '" + course.getTitle() + "' has been created.");
 
-        } catch (DomainException e) {
+        } catch (BusinessException e) {
             System.out.println("\nBusiness Error: " + e.getMessage());
 
         } catch (NumberFormatException e) {
@@ -248,7 +248,7 @@ public class CourseMenu {
 
             System.out.println("\nSuccess! The course '" + course.getTitle() + "' has been updated.");
 
-        } catch (DomainException e) {
+        } catch (BusinessException e) {
             System.out.println("\nBusiness Error: " + e.getMessage());
 
         } catch (NumberFormatException e) {
@@ -274,7 +274,7 @@ public class CourseMenu {
             Course course = inactivateCourseUseCase.execute(title);
             System.out.println("Success! The course '" + course.getTitle() + "' has been deactivated.");
 
-        } catch (DomainException e) {
+        } catch (BusinessException e) {
             System.out.println("\nBusiness Error: " + e.getMessage());
 
         } catch (Exception e) {
@@ -294,7 +294,7 @@ public class CourseMenu {
             Course course = activateCourseUseCase.execute(title);
             System.out.println("Success! The course '" + course.getTitle() + "' has been reactivated.");
 
-        } catch (DomainException e) {
+        } catch (BusinessException e) {
             System.out.println("\nBusiness Error: " + e.getMessage());
 
         } catch (Exception e) {

@@ -1,6 +1,6 @@
 package br.com.academiadev.domain.entities;
 
-import br.com.academiadev.domain.exceptions.DomainException;
+import br.com.academiadev.domain.exceptions.*;
 import java.time.LocalDateTime;
 
 public class Enrollment {
@@ -12,7 +12,7 @@ public class Enrollment {
 
     public Enrollment(Student student, Course course) {
         if (student == null || course == null) {
-            throw new DomainException("Aluno e Curso são obrigatórios para a matrícula.");
+            throw new BusinessException("Aluno e Curso são obrigatórios para a matrícula.");
         }
         
         this.student = student;
@@ -23,14 +23,14 @@ public class Enrollment {
 
     public void addWatchedHours(int hoursToAdd) {
         if (hoursToAdd < 0) {
-            throw new DomainException("As horas assistidas não podem ser negativas.");
+            throw new EnrollmentException("As horas assistidas não podem ser negativas.");
         }
 
         int courseDuration = course.getDurationHours();
         int newTotal = this.watchedHours + hoursToAdd;
 
         if (newTotal > courseDuration) {
-            throw new DomainException(
+            throw new EnrollmentException(
                 "A carga horária total (" + newTotal + "h) excede a duração do curso (" + courseDuration + "h)."
             );
         }

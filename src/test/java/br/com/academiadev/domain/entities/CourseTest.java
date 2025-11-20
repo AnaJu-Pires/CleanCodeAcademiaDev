@@ -2,7 +2,7 @@ package br.com.academiadev.domain.entities;
 
 import br.com.academiadev.domain.enums.CourseStatus;
 import br.com.academiadev.domain.enums.DifficultyLevel;
-import br.com.academiadev.domain.exceptions.DomainException;
+import br.com.academiadev.domain.exceptions.BusinessException;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -31,39 +31,39 @@ class CourseTest {
     @Test
     void shouldThrowExceptionWhenCreatingInvalidCourse() {
 
-        assertThrows(DomainException.class, () -> {
+        assertThrows(BusinessException.class, () -> {
             new Course(null, "Desc", "Inst", 10, DifficultyLevel.BEGINNER);
         });
 
-        assertThrows(DomainException.class, () -> {
+        assertThrows(BusinessException.class, () -> {
             new Course("", "Desc", "Inst", 10, DifficultyLevel.BEGINNER);
         });
 
-        assertThrows(DomainException.class, () -> {
+        assertThrows(BusinessException.class, () -> {
             new Course("   ", "Desc", "Inst", 10, DifficultyLevel.BEGINNER);
         });
 
-        assertThrows(DomainException.class, () -> {
+        assertThrows(BusinessException.class, () -> {
             new Course("Java", "Desc", null, 10, DifficultyLevel.BEGINNER);
         });
 
-        assertThrows(DomainException.class, () -> {
+        assertThrows(BusinessException.class, () -> {
             new Course("Java", "Desc", "Instrutor", -5, DifficultyLevel.BEGINNER);
         });
 
-        assertThrows(DomainException.class, () -> {
+        assertThrows(BusinessException.class, () -> {
             new Course("Java", "Desc", "Instrutor", 10, null);
         });
 
-        assertThrows(DomainException.class, () -> {
+        assertThrows(BusinessException.class, () -> {
             new Course("Java", null, null, 10, DifficultyLevel.BEGINNER);
         });
 
-        assertThrows(DomainException.class, () -> {
+        assertThrows(BusinessException.class, () -> {
             new Course("Java", "Desc", "", 10, DifficultyLevel.BEGINNER);
         });
 
-        assertThrows(DomainException.class, () -> {
+        assertThrows(BusinessException.class, () -> {
             new Course("Java", "Desc", "   ", 10, DifficultyLevel.BEGINNER);
         });
     }

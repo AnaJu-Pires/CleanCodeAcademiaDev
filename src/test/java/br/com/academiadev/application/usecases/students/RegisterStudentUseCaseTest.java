@@ -3,7 +3,7 @@ package br.com.academiadev.application.usecases.students;
 import br.com.academiadev.application.repositories.StudentRepository;
 import br.com.academiadev.domain.entities.Student;
 import br.com.academiadev.domain.enums.SubscriptionPlan;
-import br.com.academiadev.domain.exceptions.DomainException;
+import br.com.academiadev.domain.exceptions.BusinessException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -46,7 +46,7 @@ class RegisterStudentUseCaseTest {
         Student existingStudent = new Student("Outra Pessoa", "ana@email.com", SubscriptionPlan.BASIC);
         when(repository.findByEmail("ana@email.com")).thenReturn(Optional.of(existingStudent));
 
-        DomainException exception = assertThrows(DomainException.class, () -> {
+        BusinessException exception = assertThrows(BusinessException.class, () -> {
             useCase.execute("Ana", "ana@email.com", SubscriptionPlan.PREMIUM);
         });
 

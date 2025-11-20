@@ -1,7 +1,8 @@
 package br.com.academiadev.domain.entities;
 
 import br.com.academiadev.domain.enums.DifficultyLevel;
-import br.com.academiadev.domain.exceptions.DomainException;
+import br.com.academiadev.domain.exceptions.BusinessException;
+import br.com.academiadev.domain.exceptions.EnrollmentException;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -14,8 +15,8 @@ class EnrollmentTest {
         Student student = mock(Student.class);
         Course course = new Course("Java", "Desc", "Prof", 10, DifficultyLevel.BEGINNER);
 
-        assertThrows(DomainException.class, () -> new Enrollment(null, course));
-        assertThrows(DomainException.class, () -> new Enrollment(student, null));
+        assertThrows(BusinessException.class, () -> new Enrollment(null, course));
+        assertThrows(BusinessException.class, () -> new Enrollment(student, null));
     }
 
     @Test
@@ -34,11 +35,12 @@ class EnrollmentTest {
         Student student = mock(Student.class);
         Course course = new Course("Java", "Desc", "Prof", 10, DifficultyLevel.BEGINNER); 
         Enrollment enrollment = new Enrollment(student, course);
+
         enrollment.addWatchedHours(6);
         assertEquals(6, enrollment.getWatchedHours());
         assertEquals(60, enrollment.getProgressPercentage());
 
-        assertThrows(DomainException.class, () -> {
+        assertThrows(EnrollmentException.class, () -> {
             enrollment.addWatchedHours(5);
         });
 
@@ -53,7 +55,7 @@ class EnrollmentTest {
     void shouldThrowExceptionForNegativeHours() {
         Enrollment enrollment = new Enrollment(mock(Student.class), new Course("A", "B", "C", 10, DifficultyLevel.BEGINNER));
         
-        assertThrows(DomainException.class, () -> {
+        assertThrows(EnrollmentException.class, () -> {
             enrollment.addWatchedHours(-1);
         });
     }
