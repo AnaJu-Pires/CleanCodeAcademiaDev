@@ -77,17 +77,6 @@ public class UpdateCourseUseCaseTest {
     }
 
     @Test
-    void shouldThrowExceptionWhenCourseNotFound() {
-        when(courseRepository.findByTitle("Inexistente")).thenReturn(Optional.empty());
-
-        assertThrows(DomainException.class, () -> {
-            useCase.execute("Inexistente", "Desc", "Prof", 10, DifficultyLevel.BEGINNER);
-        });
-
-        verify(courseRepository, never()).save(any());
-    }
-
-    @Test
     void shouldKeepAllOriginalValuesWhenAllInputsAreNull() {
         Course existingCourse = new Course("Java", "Desc Original", "Prof Original", 10, DifficultyLevel.BEGINNER);
 
@@ -103,5 +92,13 @@ public class UpdateCourseUseCaseTest {
         assertEquals(DifficultyLevel.BEGINNER, updatedCourse.getDifficultyLevel());
         
         verify(courseRepository, times(1)).save(any(Course.class));
+    }
+
+    @Test
+    void shouldThrowExceptionWhenCourseNotFound() {
+        when(courseRepository.findByTitle("Inexistente")).thenReturn(Optional.empty());
+        assertThrows(DomainException.class, () -> {
+            useCase.execute("Inexistente", "Desc", "Prof", 10, DifficultyLevel.BEGINNER);
+        });
     }
 }

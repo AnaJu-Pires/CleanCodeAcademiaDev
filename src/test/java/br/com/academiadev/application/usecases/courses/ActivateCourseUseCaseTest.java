@@ -10,36 +10,43 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+import java.util.Optional;
+
 @ExtendWith(MockitoExtension.class)
-public class SearchCourseUseCaseTest {
-    
+public class ActivateCourseUseCaseTest {
+
     @Mock
     private CourseRepository courseRepository;
 
     @InjectMocks
-    private SearchCourseUseCase useCase;
+    private ActivateCourseUseCase useCase;
 
     @Test
-    void shouldSearchCourseSuccessfully() {
+    void shouldActivateCourseSuccessfully() {
         Course course = new Course("Java", "Desc", "Prof", 10, DifficultyLevel.BEGINNER);
+        course.inactivate();
+        when(courseRepository.findByTitle("Java")).thenReturn(java.util.Optional.of(course));
+        when(courseRepository.save(any(Course.class))).thenAnswer(i -> i.getArgument(0));
 
+        useCase.execute("Java");
+        assertTrue(course.isActive());
+
+        verify(courseRepository, times(1)).save(any(Course.class));
+    }   
+
+    @Test
+    void shouldNotChangeStatusIfAlreadyActive() {
+        Course course = new Course("Java", "Desc", "Prof", 10, DifficultyLevel.BEGINNER);
         when(courseRepository.findByTitle("Java")).thenReturn(java.util.Optional.of(course));
 
-        Optional<Course> foundCourse = useCase.execute("Java");
+        useCase.execute("Java");
+        assertTrue(course.isActive());
 
-        assertNotNull(foundCourse);
-        assertEquals("Java", foundCourse.get().getTitle());
-        assertEquals("Desc", foundCourse.get().getDescription());
-        assertEquals("Prof", foundCourse.get().getInstructorName());
-        assertEquals(10, foundCourse.get().getDurationHours());
-        assertEquals(DifficultyLevel.BEGINNER, foundCourse.get().getDifficultyLevel());
-        assertTrue(foundCourse.get().isActive());
-
-        verify(courseRepository, times(1)).findByTitle("Java");
+        verify(courseRepository, times(0)).save(any(Course.class));
     }
 
     @Test
@@ -48,7 +55,6 @@ public class SearchCourseUseCaseTest {
         assertThrows(DomainException.class, () -> {
             useCase.execute("Inexistente");
         });
-
-        verify(courseRepository, times(1)).findByTitle("Inexistente");
     }
+
 }

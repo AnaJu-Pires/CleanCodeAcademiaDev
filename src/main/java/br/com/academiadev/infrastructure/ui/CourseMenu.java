@@ -14,13 +14,17 @@ public class CourseMenu {
     private final ListCoursesUseCase listCoursesUseCase;
     private final SearchCourseUseCase searchCourseUseCase;
     private final UpdateCourseUseCase updateCourseUseCase;
+    private final InactivateCourseUseCase inactivateCourseUseCase;
+    private final ActivateCourseUseCase activateCourseUseCase;
     private final Scanner scanner;
 
-    public CourseMenu(CreateCourseUseCase createCourseUseCase, ListCoursesUseCase listCoursesUseCase, SearchCourseUseCase searchCourseUseCase, UpdateCourseUseCase updateCourseUseCase) {
+    public CourseMenu(CreateCourseUseCase createCourseUseCase, ListCoursesUseCase listCoursesUseCase, SearchCourseUseCase searchCourseUseCase, UpdateCourseUseCase updateCourseUseCase, InactivateCourseUseCase inactivateCourseUseCase, ActivateCourseUseCase activateCourseUseCase) {
         this.createCourseUseCase = createCourseUseCase;
         this.listCoursesUseCase = listCoursesUseCase;
         this.searchCourseUseCase = searchCourseUseCase;
         this.updateCourseUseCase = updateCourseUseCase;
+        this.inactivateCourseUseCase = inactivateCourseUseCase;
+        this.activateCourseUseCase = activateCourseUseCase;
         this.scanner = new Scanner(System.in);
     }
 
@@ -56,10 +60,12 @@ public class CourseMenu {
                     ConsoleUtils.waitForEnter(scanner);
                     break;
                 case "5":
-                    //deactivateCourse();
+                    deactivateCourse();
+                    ConsoleUtils.waitForEnter(scanner);
                     break;
                 case "6":
-                    //reactivateCourse();
+                    reactivateCourse();
+                    ConsoleUtils.waitForEnter(scanner);
                     break;
                 case "0":
                     ConsoleUtils.clearScreen();
@@ -240,5 +246,41 @@ public class CourseMenu {
         } catch (Exception e) {
             System.out.println("\nError: " + e.getMessage());
         } 
+    }
+
+    private void deactivateCourse() {
+        ConsoleUtils.printTitle("Deactivating a Course");
+
+        System.out.print("Enter course title to deactivate: ");
+        String title = scanner.nextLine();
+
+        try {
+            Course course = inactivateCourseUseCase.execute(title);
+            System.out.println("Success! The course '" + course.getTitle() + "' has been deactivated.");
+
+        } catch (DomainException e) {
+            System.out.println("\nBusiness Error: " + e.getMessage());
+
+        } catch (Exception e) {
+            System.out.println("\nError: " + e.getMessage());
+        }
+    }
+
+    private void reactivateCourse() {
+        ConsoleUtils.printTitle("Reactivating a Course");
+
+        System.out.print("Enter course title to reactivate: ");
+        String title = scanner.nextLine();
+
+        try {
+            Course course = activateCourseUseCase.execute(title);
+            System.out.println("Success! The course '" + course.getTitle() + "' has been reactivated.");
+
+        } catch (DomainException e) {
+            System.out.println("\nBusiness Error: " + e.getMessage());
+
+        } catch (Exception e) {
+            System.out.println("\nError: " + e.getMessage());
+        }
     }
 }
