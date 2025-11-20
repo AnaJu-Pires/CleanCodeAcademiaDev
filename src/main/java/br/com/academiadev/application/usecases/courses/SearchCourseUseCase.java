@@ -1,4 +1,4 @@
-package br.com.academiadev.application.usecases;
+package br.com.academiadev.application.usecases.courses;
 
 import java.util.Optional;
 import br.com.academiadev.application.repositories.CourseRepository;

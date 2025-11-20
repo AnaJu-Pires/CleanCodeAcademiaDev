@@ -1,11 +1,9 @@
 package br.com.academiadev.infrastructure.ui;
 
-import br.com.academiadev.application.usecases.CreateCourseUseCase;
+import br.com.academiadev.application.usecases.courses.*;
 import br.com.academiadev.domain.entities.Course;
 import br.com.academiadev.domain.enums.DifficultyLevel;
 import br.com.academiadev.domain.exceptions.DomainException;
-import br.com.academiadev.application.usecases.ListCoursesUseCase;
-import br.com.academiadev.application.usecases.SearchCourseUseCase;
 
 import java.util.Optional;
 import java.util.Scanner;
@@ -15,12 +13,14 @@ public class CourseMenu {
     private final CreateCourseUseCase createCourseUseCase;
     private final ListCoursesUseCase listCoursesUseCase;
     private final SearchCourseUseCase searchCourseUseCase;
+    private final UpdateCourseUseCase updateCourseUseCase;
     private final Scanner scanner;
 
-    public CourseMenu(CreateCourseUseCase createCourseUseCase, ListCoursesUseCase listCoursesUseCase, SearchCourseUseCase searchCourseUseCase) {
+    public CourseMenu(CreateCourseUseCase createCourseUseCase, ListCoursesUseCase listCoursesUseCase, SearchCourseUseCase searchCourseUseCase, UpdateCourseUseCase updateCourseUseCase) {
         this.createCourseUseCase = createCourseUseCase;
         this.listCoursesUseCase = listCoursesUseCase;
         this.searchCourseUseCase = searchCourseUseCase;
+        this.updateCourseUseCase = updateCourseUseCase;
         this.scanner = new Scanner(System.in);
     }
 
@@ -41,6 +41,7 @@ public class CourseMenu {
             switch (option) {
                 case "1":
                     createNewCourse();
+                    ConsoleUtils.waitForEnter(scanner);
                     break;
                 case "2":
                     listCourses();
@@ -51,7 +52,8 @@ public class CourseMenu {
                     ConsoleUtils.waitForEnter(scanner);
                     break;
                 case "4":
-                    //updateCourse();
+                    updateCourse();
+                    ConsoleUtils.waitForEnter(scanner);
                     break;
                 case "5":
                     //deactivateCourse();
@@ -137,7 +139,7 @@ public class CourseMenu {
         }
         
         if (!hasActiveCourses) {
-            System.out.println("\t(None)");
+            System.out.println("\t No active courses found.");
         }
     }
 
@@ -155,7 +157,7 @@ public class CourseMenu {
         }
         
         if (!hasInactiveCourses) {
-            System.out.println("\t(None)");
+            System.out.println("\t No inactive courses found.");
         }
     }
 
@@ -178,5 +180,65 @@ public class CourseMenu {
         } else {
             System.out.println("No course found with the title: " + title);
         }
+    }
+
+    private void updateCourse() {
+        ConsoleUtils.printTitle("Updating a Course");
+
+        System.out.print("Enter course title to update: ");
+        String title = scanner.nextLine();
+
+        Optional<Course> courseOpt = searchCourseUseCase.execute(title);
+
+        if (courseOpt.isEmpty()) {
+            System.out.println("No course found with the title: " + title);
+            return;
+        }
+
+        Course course = courseOpt.get();
+
+        try {
+            System.out.print("New Description (leave blank to keep current): ");
+            String newDescription = scanner.nextLine();
+            if (!newDescription.trim().isEmpty()) {
+                course.updateDescription(newDescription);
+            }
+
+            System.out.print("New Instructor (leave blank to keep current): ");
+            String newInstructor = scanner.nextLine();
+            if (!newInstructor.trim().isEmpty()) {
+                course.updateInstructorName(newInstructor);
+            }
+
+            System.out.print("New Workload (hours) (leave blank to keep current): ");
+            String hoursInput = scanner.nextLine();
+            if (!hoursInput.trim().isEmpty()) {
+                int newHours = Integer.parseInt(hoursInput);
+                course.updateDurationHours(newHours);
+            }
+
+            System.out.print("New Difficulty (BEGINNER, INTERMEDIATE, ADVANCED) (leave blank to keep current): ");
+            String levelInput = scanner.nextLine().toUpperCase().trim();
+            DifficultyLevel newDifficultyLevel = null;
+            if (!levelInput.isEmpty()) {
+                newDifficultyLevel = DifficultyLevel.valueOf(levelInput);
+            }
+
+            updateCourseUseCase.execute(title, newDescription, newInstructor, Integer.parseInt(hoursInput), newDifficultyLevel);
+
+            System.out.println("\nSuccess! The course '" + course.getTitle() + "' has been updated.");
+
+        } catch (DomainException e) {
+            System.out.println("\nBusiness Error: " + e.getMessage());
+
+        } catch (NumberFormatException e) {
+            System.out.println("\nError: Workload must be a valid integer.");
+
+        } catch (IllegalArgumentException e) {
+            System.out.println("\nError: Invalid difficulty level. Choose between BEGINNER, INTERMEDIATE, or ADVANCED.");
+            
+        } catch (Exception e) {
+            System.out.println("\nError: " + e.getMessage());
+        } 
     }
 }
