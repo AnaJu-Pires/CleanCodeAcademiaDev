@@ -3,7 +3,7 @@ package br.com.academiadev.infrastructure.ui;
 import br.com.academiadev.application.usecases.courses.*;
 import br.com.academiadev.domain.entities.Course;
 import br.com.academiadev.domain.enums.DifficultyLevel;
-import br.com.academiadev.domain.exceptions.DomainException;
+import br.com.academiadev.domain.exceptions.BusinessException;
 
 import java.util.Optional;
 import java.util.Scanner;
@@ -37,7 +37,7 @@ public class CourseMenu {
             System.out.println("4. Update Course");
             System.out.println("5. Deactivate Course");
             System.out.println("6. Reactivate Course");
-            System.out.println("0. Back to Main Menu");
+            System.out.println("0. Back to Admin Menu");
             System.out.print("Choose an option: ");
 
             String option = scanner.nextLine();
@@ -78,30 +78,36 @@ public class CourseMenu {
 
     private void createNewCourse() {
         ConsoleUtils.printTitle("Creating a New Course");
+        ConsoleUtils.printCancelMessage();
         
         try {
             System.out.print("Title: ");
             String title = scanner.nextLine();
+            if (ConsoleUtils.isExit(title)) return;
 
             System.out.print("Description: ");
             String description = scanner.nextLine();
+            if (ConsoleUtils.isExit(description)) return;
 
             System.out.print("Instructor: ");
             String instructor = scanner.nextLine();
+            if (ConsoleUtils.isExit(instructor)) return;
 
             System.out.print("Workload (hours): ");
             int hours = Integer.parseInt(scanner.nextLine());
+            if (ConsoleUtils.isExit(String.valueOf(hours))) return;
 
             System.out.println("Available levels: BEGINNER, INTERMEDIATE, ADVANCED");
             System.out.print("Difficulty: ");
             String levelStr = scanner.nextLine().toUpperCase().trim();
+            if (ConsoleUtils.isExit(levelStr)) return;
             DifficultyLevel level = DifficultyLevel.valueOf(levelStr);
 
             Course course = createCourseUseCase.execute(title, description, instructor, hours, level);
 
             System.out.println("\nSuccess! The course '" + course.getTitle() + "' has been created.");
 
-        } catch (DomainException e) {
+        } catch (BusinessException e) {
             System.out.println("\nBusiness Error: " + e.getMessage());
 
         } catch (NumberFormatException e) {
@@ -169,9 +175,11 @@ public class CourseMenu {
 
     private void searchCourse() {
         ConsoleUtils.printTitle("Searching for a Course");
+        ConsoleUtils.printCancelMessage();
 
         System.out.print("Enter course title to search: ");
         String title = scanner.nextLine();
+        if (ConsoleUtils.isExit(title)) return;
 
         Optional<Course> course = searchCourseUseCase.execute(title);
 
@@ -190,9 +198,11 @@ public class CourseMenu {
 
     private void updateCourse() {
         ConsoleUtils.printTitle("Updating a Course");
+        ConsoleUtils.printCancelMessage();
 
         System.out.print("Enter course title to update: ");
         String title = scanner.nextLine();
+        if (ConsoleUtils.isExit(title)) return;
 
         Optional<Course> courseOpt = searchCourseUseCase.execute(title);
 
@@ -206,18 +216,21 @@ public class CourseMenu {
         try {
             System.out.print("New Description (leave blank to keep current): ");
             String newDescription = scanner.nextLine();
+            if (ConsoleUtils.isExit(newDescription)) return;
             if (!newDescription.trim().isEmpty()) {
                 course.updateDescription(newDescription);
             }
 
             System.out.print("New Instructor (leave blank to keep current): ");
             String newInstructor = scanner.nextLine();
+            if (ConsoleUtils.isExit(newInstructor)) return;
             if (!newInstructor.trim().isEmpty()) {
                 course.updateInstructorName(newInstructor);
             }
 
             System.out.print("New Workload (hours) (leave blank to keep current): ");
             String hoursInput = scanner.nextLine();
+            if (ConsoleUtils.isExit(hoursInput)) return;
             if (!hoursInput.trim().isEmpty()) {
                 int newHours = Integer.parseInt(hoursInput);
                 course.updateDurationHours(newHours);
@@ -225,6 +238,7 @@ public class CourseMenu {
 
             System.out.print("New Difficulty (BEGINNER, INTERMEDIATE, ADVANCED) (leave blank to keep current): ");
             String levelInput = scanner.nextLine().toUpperCase().trim();
+            if (ConsoleUtils.isExit(levelInput)) return;
             DifficultyLevel newDifficultyLevel = null;
             if (!levelInput.isEmpty()) {
                 newDifficultyLevel = DifficultyLevel.valueOf(levelInput);
@@ -234,7 +248,7 @@ public class CourseMenu {
 
             System.out.println("\nSuccess! The course '" + course.getTitle() + "' has been updated.");
 
-        } catch (DomainException e) {
+        } catch (BusinessException e) {
             System.out.println("\nBusiness Error: " + e.getMessage());
 
         } catch (NumberFormatException e) {
@@ -250,15 +264,17 @@ public class CourseMenu {
 
     private void deactivateCourse() {
         ConsoleUtils.printTitle("Deactivating a Course");
+        ConsoleUtils.printCancelMessage();
 
         System.out.print("Enter course title to deactivate: ");
         String title = scanner.nextLine();
+        if (ConsoleUtils.isExit(title)) return;
 
         try {
             Course course = inactivateCourseUseCase.execute(title);
             System.out.println("Success! The course '" + course.getTitle() + "' has been deactivated.");
 
-        } catch (DomainException e) {
+        } catch (BusinessException e) {
             System.out.println("\nBusiness Error: " + e.getMessage());
 
         } catch (Exception e) {
@@ -268,15 +284,17 @@ public class CourseMenu {
 
     private void reactivateCourse() {
         ConsoleUtils.printTitle("Reactivating a Course");
+        ConsoleUtils.printCancelMessage();
 
         System.out.print("Enter course title to reactivate: ");
         String title = scanner.nextLine();
+        if (ConsoleUtils.isExit(title)) return;
 
         try {
             Course course = activateCourseUseCase.execute(title);
             System.out.println("Success! The course '" + course.getTitle() + "' has been reactivated.");
 
-        } catch (DomainException e) {
+        } catch (BusinessException e) {
             System.out.println("\nBusiness Error: " + e.getMessage());
 
         } catch (Exception e) {

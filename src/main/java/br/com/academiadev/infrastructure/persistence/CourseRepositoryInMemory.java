@@ -13,7 +13,6 @@ public class CourseRepositoryInMemory implements CourseRepository {
 
     @Override
     public Course save(Course course) {
-
         database.put(course.getTitle(), course);
         return course;
     }

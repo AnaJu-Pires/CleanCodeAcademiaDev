@@ -3,7 +3,7 @@ package br.com.academiadev.application.usecases.courses;
 import br.com.academiadev.application.repositories.CourseRepository;
 import br.com.academiadev.domain.entities.Course;
 import br.com.academiadev.domain.enums.DifficultyLevel;
-import br.com.academiadev.domain.exceptions.DomainException;
+import br.com.academiadev.domain.exceptions.BusinessException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -44,7 +44,7 @@ class CreateCourseUseCaseTest {
         Course existingCourse = new Course("Java", "D", "P", 10, DifficultyLevel.BEGINNER);
         when(courseRepository.findByTitle("Java")).thenReturn(Optional.of(existingCourse));
 
-        assertThrows(DomainException.class, () -> {
+        assertThrows(BusinessException.class, () -> {
             useCase.execute("Java", "Desc", "Prof", 10, DifficultyLevel.BEGINNER);
         });
 

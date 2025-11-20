@@ -24,7 +24,20 @@ public class ConsoleUtils {
         System.out.println("========================================\n");
     }
 
-   public static void printTitle(String title) {
+    public static void printTitle(String title) {
         System.out.println("\n--- " + title.toUpperCase() + " ---\n");
-    } 
+    }
+
+    public static void printCancelMessage() {
+        System.out.println("(Type 'exit' at any time to cancel)\n");
+    }
+
+    public static boolean isExit(String input) {
+        if (input != null && input.trim().equalsIgnoreCase("exit")) {
+            System.out.println("\nOperation canceled.");
+            return true;
+        }
+        return false;
+    }
+
 }

@@ -2,7 +2,7 @@ package br.com.academiadev.application.usecases.courses;
 
 import br.com.academiadev.application.repositories.CourseRepository;
 import br.com.academiadev.domain.entities.Course;
-import br.com.academiadev.domain.exceptions.DomainException;
+import br.com.academiadev.domain.exceptions.BusinessException;
 
 
 public class ActivateCourseUseCase {
@@ -15,7 +15,7 @@ public class ActivateCourseUseCase {
 
     public Course execute(String title) {
         Course course = repository.findByTitle(title)
-                .orElseThrow(() -> new DomainException("No course found with the title: " + title));
+                .orElseThrow(() -> new BusinessException("No course found with the title: " + title));
 
         if (course.isActive()) {
             System.out.println("Course is already active.");

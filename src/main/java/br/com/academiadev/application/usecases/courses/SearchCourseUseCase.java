@@ -3,7 +3,7 @@ package br.com.academiadev.application.usecases.courses;
 import java.util.Optional;
 import br.com.academiadev.application.repositories.CourseRepository;
 import br.com.academiadev.domain.entities.Course;
-import br.com.academiadev.domain.exceptions.DomainException;
+import br.com.academiadev.domain.exceptions.BusinessException;
 
 public class SearchCourseUseCase {
       private final CourseRepository repository;
@@ -14,7 +14,7 @@ public class SearchCourseUseCase {
 
     public Optional<Course> execute(String title) {
         Course course = repository.findByTitle(title)
-            .orElseThrow(() -> new DomainException("No course found with the title: " + title));
+            .orElseThrow(() -> new BusinessException("No course found with the title: " + title));
 
         return Optional.of(course);
     }
