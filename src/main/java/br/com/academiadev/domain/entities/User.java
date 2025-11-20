@@ -36,4 +36,6 @@ public abstract class User {
     public String getEmail() {
         return email;
     }
+
+    public abstract String getRole();
 }
