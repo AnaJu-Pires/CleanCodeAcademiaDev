@@ -14,7 +14,7 @@ public class MainMenu {
 
     public void show() {
         while (true) {
-            System.out.println("\n\t ------------ MAIN MENU ------------\n");
+            ConsoleUtils.printTitle("Main Menu");
             System.out.println("1. Admin Menu (Manage Courses)");
             System.out.println("2. Student Menu (Enroll/View)");
             System.out.println("0. Exit");

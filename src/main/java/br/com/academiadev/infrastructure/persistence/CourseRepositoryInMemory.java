@@ -22,4 +22,10 @@ public class CourseRepositoryInMemory implements CourseRepository {
     public Optional<Course> findByTitle(String title) {
         return Optional.ofNullable(database.get(title));
     }
+
+    @Override
+    public Iterable<Course> findAll() {
+        return database.values();
+    }
+
 }

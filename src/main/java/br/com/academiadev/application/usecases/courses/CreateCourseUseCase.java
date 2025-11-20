@@ -1,4 +1,4 @@
-package br.com.academiadev.application.usecases;
+package br.com.academiadev.application.usecases.courses;
 
 import br.com.academiadev.application.repositories.CourseRepository;
 import br.com.academiadev.domain.entities.Course;

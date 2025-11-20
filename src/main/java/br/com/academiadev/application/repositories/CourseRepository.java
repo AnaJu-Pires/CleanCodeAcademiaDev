@@ -6,4 +6,5 @@ import java.util.Optional;
 public interface CourseRepository {
     Course save(Course course);
     Optional<Course> findByTitle(String title);
+    Iterable<Course> findAll();
 }
